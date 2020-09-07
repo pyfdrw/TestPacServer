@@ -1,0 +1,125 @@
+﻿<Window x:Class="PacServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PacServer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TabControl>
+                <TabItem Header="Store">
+                    <Grid Margin="5">
+                        <StackPanel Margin="3">
+                            <StackPanel Orientation="Horizontal">
+                                <Label></Label>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Find">
+
+                </TabItem>
+                <TabItem Header="Query">
+                    <Grid Margin="5" x:Name="QueryConfigGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="3">
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
+                                    Patient Name:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=ToQueryPatientName}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
+                                    Patient ID:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=ToQueryPatientId}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
+                                    Study Instance UID:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=ToQueryStudyInstanceUid}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
+                                    Date Range:
+                                </Label>
+                                <GroupBox MinWidth="100" HorizontalContentAlignment="Right" Padding="2" Header="Begin">
+                                    <DatePicker SelectedDate="{Binding Path=ToQueryMinStudyDateRange}"></DatePicker>
+                                </GroupBox>
+                                <GroupBox MinWidth="100" HorizontalContentAlignment="Right" Padding="2" Header="End">
+                                    <DatePicker SelectedDate="{Binding Path=ToQueryMaxStudyDateRange}"></DatePicker>
+                                </GroupBox>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Button MinWidth="100" HorizontalAlignment="Left" MinHeight="30" Margin="90,0,0,0" Click="QueryServer_ButtonClick">Query</Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <Grid Grid.Column="1" Margin="3" x:Name="QueryLogGrid">
+                            <TextBox  MinWidth="250" MinHeight="200" TextAlignment="Left" TextWrapping="WrapWithOverflow" Text="{Binding Path=LogInfo}" Margin="10" 
+                                          ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            </TextBox>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Server config">
+                    <Grid Margin="5" x:Name="serverCfgGrid">
+                        <StackPanel Margin="3">
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="100" HorizontalContentAlignment="Right" Padding="2">
+                                    Local AE:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=LocalAeTitle}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="100" HorizontalContentAlignment="Right" Padding="2">
+                                    Remote AE:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=RemoteAeTitle}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="100" HorizontalContentAlignment="Right" Padding="2">
+                                    Remote IP:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=RemoteIp}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="100" HorizontalContentAlignment="Right" Padding="2">
+                                    Remote Port:
+                                </Label>
+                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=RemotePort}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Button MinWidth="100" HorizontalAlignment="Left" MinHeight="30" Margin="90,0,0,0"
+                                        Click="echoServer_ButtonClick">Echo</Button>
+                            </StackPanel>
+                            <StackPanel Margin="5" Orientation="Horizontal">
+                                <TextBox  MinWidth="250" MinHeight="200" TextAlignment="Left" TextWrapping="WrapWithOverflow" Text="{Binding Path=LogInfo}" Margin="10" 
+                                          ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                </TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
