@@ -23,6 +23,7 @@ using NLog.Config;
 using NLog.Targets;
 using Path = System.IO.Path;
 using PacServer.ScuFuncs;
+using System.Windows.Forms;
 
 namespace PacServer
 {
@@ -42,7 +43,6 @@ namespace PacServer
             serverCfgGrid.DataContext = TheServerConfig;
             QueryLogGrid.DataContext = TheServerConfig;
             QueryConfigGrid.DataContext = TheQueryConfig;
-
         }
 
         private void echoServer_ButtonClick(object sender, RoutedEventArgs e)
@@ -74,6 +74,32 @@ namespace PacServer
         private void QueryServer_ButtonClick(object sender, RoutedEventArgs e)
         {
             PacRealated.QueryServer_Do(TheServerConfig, TheQueryConfig);
+        }
+
+        // 改变Retrieve的文件夹
+        private void SelectFolder_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Open Folder
+            FolderBrowserDialog ofd = new FolderBrowserDialog();
+            ofd.ShowNewFolderButton = true;
+            ofd.Description = "设置Dcm保存路径";
+            // ofd.RootFolder = Environment.SpecialFolder.MyDocuments;
+            var result = ofd.ShowDialog();
+            if(result == System.Windows.Forms.DialogResult.OK && Directory.Exists(ofd.SelectedPath))
+            {
+                TheQueryConfig.RetrieveSaveFolder = ofd.SelectedPath;
+            }
+        }
+
+        // 恢复查询到的Dcm
+        private void retrieve_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            PacRealated.RetrieveServer_Do(TheServerConfig, TheQueryConfig);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            TheQueryConfig.CStoreServer.Stop();
         }
     }
 }

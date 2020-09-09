@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PacServer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
@@ -28,10 +28,10 @@
                 <TabItem Header="Query">
                     <Grid Margin="5" x:Name="QueryConfigGrid">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Margin="3">
+                        <StackPanel Margin="3" Grid.Column="0">
                             <StackPanel Orientation="Horizontal" Margin="5">
                                 <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
                                     Patient Name:
@@ -48,24 +48,76 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="5">
                                 <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
-                                    Study Instance UID:
+                                    Study Date Range:
                                 </Label>
-                                <TextBox MinWidth="150" TextAlignment="Left" Padding="2" FontWeight="Bold" 
-                                         Text="{Binding Path=ToQueryStudyInstanceUid}"></TextBox>
+                                <StackPanel>
+                                    <GroupBox MinWidth="100" HorizontalContentAlignment="Right" Padding="2" Header="Begin">
+                                        <DatePicker SelectedDate="{Binding Path=ToQueryMinStudyDateRange}"></DatePicker>
+                                    </GroupBox>
+                                    <GroupBox MinWidth="100" HorizontalContentAlignment="Right" Padding="2" Header="End">
+                                        <DatePicker SelectedDate="{Binding Path=ToQueryMaxStudyDateRange}"></DatePicker>
+                                    </GroupBox>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
-                                    Date Range:
+                            <StackPanel Orientation="Horizontal" Margin="5" x:Name="ImgSelectStack" ToolTip="这个Type意思是某个Study不包含没有选定的序列，只包含选中序列的一个或者多个。与常规理解可能不同。" >
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2" VerticalAlignment="Center">
+                                    Dcm Types:
                                 </Label>
-                                <GroupBox MinWidth="100" HorizontalContentAlignment="Right" Padding="2" Header="Begin">
-                                    <DatePicker SelectedDate="{Binding Path=ToQueryMinStudyDateRange}"></DatePicker>
-                                </GroupBox>
-                                <GroupBox MinWidth="100" HorizontalContentAlignment="Right" Padding="2" Header="End">
-                                    <DatePicker SelectedDate="{Binding Path=ToQueryMaxStudyDateRange}"></DatePicker>
-                                </GroupBox>
+                                <DockPanel>
+                                    <StackPanel MinWidth="50" Orientation="Horizontal" Margin="3">
+                                        <Label MinWidth="40" HorizontalAlignment="Right">CT</Label>
+                                        <CheckBox IsChecked="{Binding Path=IsCtSave}" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Width="20" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                    </StackPanel>
+                                    <StackPanel MinWidth="40" Orientation="Horizontal" Margin="3">
+                                        <Label MinWidth="40" HorizontalAlignment="Right">MR</Label>
+                                        <CheckBox IsChecked="{Binding Path=IsMrSave}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Width="20" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                    </StackPanel>
+                                    <StackPanel MinWidth="40" Orientation="Horizontal" Margin="3">
+                                        <Label MinWidth="40" HorizontalAlignment="Right">PET</Label>
+                                        <CheckBox IsChecked="{Binding Path=IsPetSave}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Width="20" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                    </StackPanel>
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5" x:Name="RtSelectStack">
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2" VerticalAlignment="Center">
+                                </Label>
+                                <DockPanel>
+                                    <StackPanel MinWidth="40" Orientation="Horizontal" Margin="3">
+                                        <Label MinWidth="40" HorizontalAlignment="Right">RtS</Label>
+                                        <CheckBox IsChecked="{Binding Path=IsRtsSave}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Width="20" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                    </StackPanel>
+                                    <StackPanel MinWidth="40" Orientation="Horizontal" Margin="3">
+                                        <Label MinWidth="40" HorizontalAlignment="Right">RtP</Label>
+                                        <CheckBox IsChecked="{Binding Path=IsRtpSave}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Width="20" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                    </StackPanel>
+                                    <StackPanel MinWidth="40" Orientation="Horizontal" Margin="3">
+                                        <Label MinWidth="40" HorizontalAlignment="Right">RtP</Label>
+                                        <CheckBox IsChecked="{Binding Path=IsRtDoseSave}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Width="20" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                    </StackPanel>
+                                </DockPanel>
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <Button MinWidth="100" HorizontalAlignment="Left" MinHeight="30" Margin="90,0,0,0" Click="QueryServer_ButtonClick">Query</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Label MinWidth="150" HorizontalContentAlignment="Right" Padding="2">
+                                    Save Path:
+                                </Label>
+                                <TextBox Width="170" TextAlignment="Left" Padding="2" FontWeight="Bold" 
+                                         Text="{Binding Path=RetrieveSaveFolder}"></TextBox>
+                                <Button Width="20" Height="20" 
+                                        HorizontalContentAlignment="Center" VerticalAlignment="Center" 
+                                        VerticalContentAlignment="Center" HorizontalAlignment="Center" 
+                                        FontFamily="Arial" Click="SelectFolder_ButtonClick">...</Button>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Button MinWidth="100" HorizontalAlignment="Left" MinHeight="30" Margin="90,0,0,0" Click="retrieve_ButtonClick">Retrieve</Button>
                             </StackPanel>
                         </StackPanel>
                         <Grid Grid.Column="1" Margin="3" x:Name="QueryLogGrid">
