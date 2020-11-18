@@ -320,6 +320,7 @@ namespace PacServer.Config
         }
 
         // CStore Server
+
         public IDicomServer CStoreServer = DicomServer.Create<CStoreSCP>(1112);
 
         //建立连接并Retrieve

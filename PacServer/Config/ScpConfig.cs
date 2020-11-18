@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PacServer.Config
@@ -105,12 +106,17 @@ namespace PacServer.Config
 
         public DicomCStoreResponse OnCStoreRequest(DicomCStoreRequest request)
         {
+            var patientid = request.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+            var patientName = request.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+            patientName = patientName.Replace("^", " ");
+            patientName = Regex.Replace(patientName, "[ ]+", " ");
             var studyUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             var instUid = request.SOPInstanceUID.UID;
 
             var path = Path.GetFullPath(RetrieveSaveFolder);
+            path = Path.Combine(path, patientName + "_" + patientid);
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             path = Path.Combine(path, studyUid);
-
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
             path = Path.Combine(path, instUid) + ".dcm";
