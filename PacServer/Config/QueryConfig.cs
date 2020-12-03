@@ -321,7 +321,7 @@ namespace PacServer.Config
 
         // CStore Server
 
-        public IDicomServer CStoreServer = DicomServer.Create<CStoreSCP>(1112);
+        public IDicomServer CStoreServer = DicomServer.Create<CStoreSCP>(104);
 
         //建立连接并Retrieve
         async public void DicomCRetrieveRequestFunct(ServerConfig OneServerConfig)
@@ -334,7 +334,7 @@ namespace PacServer.Config
             // 使用CMOVE抓取信息，发送到本机STORE服务
             // using ()
             {
-                OneServerConfig.AddLogStr($"Run C-Store SCP server on port 1112");
+                OneServerConfig.AddLogStr($"Run C-Store SCP server on port 104");
                 foreach (var oneResult in Results)
                 {
                     var cMoveRequest = new DicomCMoveRequest("SegAE", oneResult.StudyInstanceUid, oneResult.SeriesInstanceUid);
